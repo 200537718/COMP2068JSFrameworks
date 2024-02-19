@@ -1,5 +1,9 @@
-// Function to generate computer's selection
+// importing the prompt npm package for user input
+const prompt = require('prompt');
+
+// function to generate computer's selection
 function generateComputerSelection() {
+     // generates a random number between 0 and 1
     const randomNumber = Math.random();
     if (randomNumber < 0.34) {
         return "PAPER";
@@ -10,8 +14,9 @@ function generateComputerSelection() {
     }
 }
 
-// Function to determine the winner
+// function to determine winner of game
 function determineWinner(userSelection, computerSelection) {
+    // to check if the user or computer have same selections
     if (userSelection === computerSelection) {
         return "It's a tie";
     } else if (
@@ -25,22 +30,23 @@ function determineWinner(userSelection, computerSelection) {
     }
 }
 
-// Get user input from command line
-const readline = require('readline');
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-rl.question('Enter your selection (ROCK, PAPER, or SCISSORS): ', (userSelection) => {
-    const userSelectionUpper = userSelection.toUpperCase(); // Convert user input to uppercase
+// Prompting the user for input
+prompt.start();
+prompt.get(['userSelection'], function (err, result) {
+    if (err) { return onErr(err); }
+    
+    const userSelection = result.userSelection.toUpperCase(); // Converting user input to uppercase
     const computerSelection = generateComputerSelection();
-
-    console.log("User Selection:", userSelectionUpper);
+    
+    console.log("User Selection:", userSelection);
     console.log("Computer Selection:", computerSelection);
-
-    const outcome = determineWinner(userSelectionUpper, computerSelection);
+    
+    const outcome = determineWinner(userSelection, computerSelection);
     console.log("Outcome:", outcome);
-
-    rl.close(); // Close the readline interface
 });
+
+// error handling function
+function onErr(err) {
+    console.error(err);
+    return 1;
+}
